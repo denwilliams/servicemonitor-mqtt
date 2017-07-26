@@ -1,0 +1,24 @@
+{
+  "name": "servicemonitor-mqtt",
+  "version": "1.0.0",
+  "description": "Monitors services by polling a defined HTTP GET request, publishes up time / down time events via MQTT",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denwilliams/servicemonitor-mqtt.git"
+  },
+  "author": "Den Williams",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/denwilliams/servicemonitor-mqtt/issues"
+  },
+  "homepage": "https://github.com/denwilliams/servicemonitor-mqtt#readme",
+  "dependencies": {
+    "got": "^7.1.0",
+    "loke-config": "^2.0.1",
+    "mqtt": "^2.9.3"
+  }
+}

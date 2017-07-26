@@ -1,0 +1,4 @@
+mqtt_host: localhost
+mqtt_topic: 'service/status'
+interval: 60
+services: []
