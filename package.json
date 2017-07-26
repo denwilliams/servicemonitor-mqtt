@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Monitors services by polling a defined HTTP GET request, publishes up time / down time events via MQTT",
   "main": "main.js",
+  "bin": {
+    "servicemonitor-mqtt": "main.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
