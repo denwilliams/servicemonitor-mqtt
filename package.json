@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/denwilliams/servicemonitor-mqtt.git"
   },
-  "author": "Den Williams",
+  "author": "Den Williams <work@denwilliams.net>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/denwilliams/servicemonitor-mqtt/issues"

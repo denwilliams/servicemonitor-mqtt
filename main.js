@@ -28,7 +28,7 @@ client.on('offline', () => {
 
 setInterval(() => {
   Promise.all(services.map(service => {
-    return got.get(service.url, { timeout: 1000 })
+    return got.get(service.url, { timeout: 5000, retries: 3 })
     .then(response => {
       if (response.statusCode === 200) setOnline(service);
       else setOffline(service);
