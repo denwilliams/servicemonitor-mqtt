@@ -1,6 +1,8 @@
 const got = require('got');
 const mqtt = require('mqtt');
 const config = require('loke-config').create('servicemonitor-mqtt');
+const { parse } = require('url');
+const tcpp = require('tcp-ping');
 
 let mqttConnected = false;
 
@@ -27,17 +29,39 @@ client.on('offline', () => {
 });
 
 setInterval(() => {
-  Promise.all(services.map(service => {
-    return got.get(service.url, { timeout: 5000, retries: 3 })
-    .then(response => {
-      if (response.statusCode === 200) setOnline(service);
-      else setOffline(service);
-    })
-    .catch(err => {
-      setOffline(service);
-    });
-  }));
+  Promise.all(services.map(checkService));
 }, interval);
+
+function checkService(service) {
+  if (service.url.indexOf('tcp://') === 0) {
+    return checkTcp(service);
+  }
+  return checkHttp(service);
+}
+
+function checkTcp(service) {
+  const url = parse(service.url);
+
+  return probe(url.hostname, url.port)
+  .then(available => {
+    if (available) setOnline(service);
+    else setOffline(service);
+  })
+  .catch(err => {
+    setOffline(service);
+  });
+}
+
+function checkHttp(service) {
+  return got.get(service.url, { timeout: 5000, retries: 3 })
+  .then(response => {
+    if (response.statusCode === 200) setOnline(service);
+    else setOffline(service);
+  })
+  .catch(err => {
+    setOffline(service);
+  });
+}
 
 function setOnline(service) {
   if (service.online === true) return; // already online
@@ -55,4 +79,13 @@ function setOffline(service) {
 function publish(service) {
   console.log('PUBLISHING', mqttTopic, service);
   client.publish(mqttTopic, JSON.stringify(service));
+}
+
+function probe(host, port) {
+  return new Promise((resolve, reject) => {
+    tcpp.probe(host, port, (err, available) => {
+      if (err) return reject(err);
+      resolve(available);
+    });
+  });
 }
