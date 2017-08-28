@@ -6,4 +6,4 @@ html
     div(class='container')
       h1 Service Monitor
       each service in services
-        div(class=service.online ? 'alert alert-success' : 'alert alert-danger', role='alert'): strong #{service.name} #{service.online}
+        div(class=service.online ? 'alert alert-success' : 'alert alert-danger', role='alert'): strong #{service.name}
